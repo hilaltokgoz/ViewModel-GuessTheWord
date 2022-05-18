@@ -46,11 +46,11 @@ class GameFragment : Fragment() {
                 false
         )
         //ViewModel oluşturma
+        //gameViewModel= ViewModelProvider(requireActivity())[GameViewModel::class.java]
         gameViewModel= ViewModelProvider(this)[GameViewModel::class.java]
-        gameViewModel= ViewModelProvider(requireActivity())[GameViewModel::class.java]
+        updateWordText()
+        updateScoreText()
 
-        resetList()
-        nextWord()
 
         binding.correctButton.setOnClickListener { onCorrect() }
         binding.skipButton.setOnClickListener { onSkip() }
@@ -60,35 +60,7 @@ class GameFragment : Fragment() {
 
     }
 
-    /**
-     * Resets the list of words and randomizes the order
-     */
-    private fun resetList() {
-        wordList = mutableListOf(
-                "queen",
-                "hospital",
-                "basketball",
-                "cat",
-                "change",
-                "snail",
-                "soup",
-                "calendar",
-                "sad",
-                "desk",
-                "guitar",
-                "home",
-                "railway",
-                "zebra",
-                "jelly",
-                "car",
-                "crow",
-                "trade",
-                "bag",
-                "roll",
-                "bubble"
-        )
-        wordList.shuffle()
-    }
+
 
     /** Methods for buttons presses **/
 
@@ -102,17 +74,7 @@ class GameFragment : Fragment() {
         nextWord()
     }
 
-    /**
-     * Moves to the next word in the list
-     */
-    private fun nextWord() {
-        if (!wordList.isEmpty()) {
-            //Select and remove a word from the list
-            word = wordList.removeAt(0)
-        }
-        updateWordText()
-        updateScoreText()
-    }
+
 
 
     /** Methods for updating the UI **/
