@@ -22,7 +22,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.android.guesstheword.R
 import com.example.android.guesstheword.databinding.GameFragmentBinding
@@ -32,58 +31,50 @@ import com.example.android.guesstheword.databinding.GameFragmentBinding
  */
 class GameFragment : Fragment() {
     private lateinit var binding: GameFragmentBinding
-
     private lateinit var gameViewModel: GameViewModel   //Olusturulan VM extend edilir.
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         // Inflate view and obtain an instance of the binding class
         binding = DataBindingUtil.inflate(
-                inflater,
-                R.layout.game_fragment,
-                container,
-                false
+            inflater,
+            R.layout.game_fragment,
+            container,
+            false
         )
         //ViewModel oluşturma
         //gameViewModel= ViewModelProvider(requireActivity())[GameViewModel::class.java]
-        gameViewModel= ViewModelProvider(this)[GameViewModel::class.java]
+        gameViewModel = ViewModelProvider(this)[GameViewModel::class.java]
+        //VM create edildikten sonra çağrılır.
         updateWordText()
         updateScoreText()
-
 
         binding.correctButton.setOnClickListener { onCorrect() }
         binding.skipButton.setOnClickListener { onSkip() }
-        updateScoreText()
-        updateWordText()
+
         return binding.root
-
     }
-
-
-
     /** Methods for buttons presses **/
-
     private fun onSkip() {
-        score--
-        nextWord()
-    }
+        //Değişkenler VM içinden çağrılır.
+        gameViewModel.onSkip()
+        updateWordText()
+        updateScoreText()
 
+    }
     private fun onCorrect() {
-        score++
-        nextWord()
+        gameViewModel.onCorrect()
+        updateWordText()
+        updateScoreText()
     }
-
-
-
-
     /** Methods for updating the UI **/
-
+    ///View'e ait özellikler var,bundan dolayı VM da bulunmaz.
     private fun updateWordText() {
-        binding.wordText.text = word
+        binding.wordText.text = gameViewModel.word
     }
-
     private fun updateScoreText() {
-        binding.scoreText.text = score.toString()
+        binding.scoreText.text = gameViewModel.score.toString()
     }
 }
