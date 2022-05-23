@@ -23,8 +23,11 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.observe
+import androidx.navigation.fragment.NavHostFragment
 import com.example.android.guesstheword.R
 import com.example.android.guesstheword.databinding.GameFragmentBinding
+import kotlinx.android.synthetic.main.main_activity.*
 
 /**
  * Fragment where the game is played
@@ -45,36 +48,34 @@ class GameFragment : Fragment() {
             false
         )
         //ViewModel oluşturma
-        //gameViewModel= ViewModelProvider(requireActivity())[GameViewModel::class.java]
         gameViewModel = ViewModelProvider(this)[GameViewModel::class.java]
-        //VM create edildikten sonra çağrılır.
-        updateWordText()
-        updateScoreText()
+        //UI da LiveData'yı observe etme:
+        //updateWordText()'i otomatik olarak alabiliriz.
+        gameViewModel.wordLiveData.observe(viewLifecycleOwner) {
+            binding.wordText.text = it
+        }
+        //updateScoreText()'i otomatik olarak alabiliriz.
+        gameViewModel.scoreLiveData.observe(viewLifecycleOwner) {
+            binding.scoreText.text = it.toString()
+        }
 
         binding.correctButton.setOnClickListener { onCorrect() }
         binding.skipButton.setOnClickListener { onSkip() }
+        binding.endGameButton.setOnClickListener { onEndGame()}
 
         return binding.root
+    }
+    private fun onEndGame() {
+       val action=GameFragmentDirections.actionGameToScore()
+        action.score=gameViewModel.scoreLiveData.value?: 0 //Hiçbir şey gitmezse değer 0 olsun.
+        NavHostFragment.findNavController(this).navigate(action)
     }
     /** Methods for buttons presses **/
     private fun onSkip() {
         //Değişkenler VM içinden çağrılır.
         gameViewModel.onSkip()
-        updateWordText()
-        updateScoreText()
-
     }
     private fun onCorrect() {
         gameViewModel.onCorrect()
-        updateWordText()
-        updateScoreText()
-    }
-    /** Methods for updating the UI **/
-    ///View'e ait özellikler var,bundan dolayı VM da bulunmaz.
-    private fun updateWordText() {
-        binding.wordText.text = gameViewModel.word
-    }
-    private fun updateScoreText() {
-        binding.scoreText.text = gameViewModel.score.toString()
     }
 }
