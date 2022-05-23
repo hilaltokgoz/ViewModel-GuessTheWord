@@ -70,7 +70,6 @@ class GameFragment : Fragment() {
                     gameViewModel.scoreLiveData.value ?: 0 //Hiçbir şey gitmezse değer 0 olsun.
                 NavHostFragment.findNavController(this).navigate(action)
             }
-
         }
 /*
         binding.correctButton.setOnClickListener { onCorrect() }
@@ -81,7 +80,6 @@ class GameFragment : Fragment() {
     }
   /*  private fun onEndGame() {
         gameViewModel.onFinishGame()
-
     }
     *//** Methods for buttons presses **//*
     private fun onSkip() {

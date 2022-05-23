@@ -13,6 +13,5 @@ class SCoreViewModelFactory(private val score:Int) :ViewModelProvider.Factory{
         }else{
             throw IllegalStateException("Can not create instance of this ViewModel") //Bu VM dan başka herhangi bir sınıf vs create edilmeye çalıştığında hata versin.
         }
-
     }
 }
