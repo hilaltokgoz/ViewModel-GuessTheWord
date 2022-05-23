@@ -58,6 +58,10 @@ class GameFragment : Fragment() {
         gameViewModel.scoreLiveData.observe(viewLifecycleOwner) {
             binding.scoreText.text = it.toString()
         }
+        //DataBinding Variable değeri verildi
+        binding.gameViewModel=gameViewModel
+        binding.lifecycleOwner=viewLifecycleOwner //VM ın içeride observe edilmesi için
+
         gameViewModel.gameFinishEventLiveta.observe(viewLifecycleOwner) { hasGameFinished ->
             if (hasGameFinished) { //oyun bittiyse
                 gameViewModel.disableGameFinishEvent()
@@ -68,23 +72,23 @@ class GameFragment : Fragment() {
             }
 
         }
-
+/*
         binding.correctButton.setOnClickListener { onCorrect() }
         binding.skipButton.setOnClickListener { onSkip() }
-        binding.endGameButton.setOnClickListener { onEndGame()}
+        binding.endGameButton.setOnClickListener { onEndGame()}*/
 
         return binding.root
     }
-    private fun onEndGame() {
+  /*  private fun onEndGame() {
         gameViewModel.onFinishGame()
 
     }
-    /** Methods for buttons presses **/
+    *//** Methods for buttons presses **//*
     private fun onSkip() {
         //Değişkenler VM içinden çağrılır.
         gameViewModel.onSkip()
     }
     private fun onCorrect() {
         gameViewModel.onCorrect()
-    }
+    }*/
 }
