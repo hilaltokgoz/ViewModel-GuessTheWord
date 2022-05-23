@@ -58,6 +58,16 @@ class GameFragment : Fragment() {
         gameViewModel.scoreLiveData.observe(viewLifecycleOwner) {
             binding.scoreText.text = it.toString()
         }
+        gameViewModel.gameFinishEventLiveta.observe(viewLifecycleOwner) { hasGameFinished ->
+            if (hasGameFinished) { //oyun bittiyse
+                gameViewModel.disableGameFinishEvent()
+                val action = GameFragmentDirections.actionGameToScore()
+                action.score =
+                    gameViewModel.scoreLiveData.value ?: 0 //Hiçbir şey gitmezse değer 0 olsun.
+                NavHostFragment.findNavController(this).navigate(action)
+            }
+
+        }
 
         binding.correctButton.setOnClickListener { onCorrect() }
         binding.skipButton.setOnClickListener { onSkip() }
@@ -66,9 +76,8 @@ class GameFragment : Fragment() {
         return binding.root
     }
     private fun onEndGame() {
-       val action=GameFragmentDirections.actionGameToScore()
-        action.score=gameViewModel.scoreLiveData.value?: 0 //Hiçbir şey gitmezse değer 0 olsun.
-        NavHostFragment.findNavController(this).navigate(action)
+        gameViewModel.onFinishGame()
+
     }
     /** Methods for buttons presses **/
     private fun onSkip() {
