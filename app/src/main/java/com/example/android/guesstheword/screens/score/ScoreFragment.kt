@@ -51,6 +51,9 @@ class ScoreFragment : Fragment() {
         scoreViewModel =
             ViewModelProvider(this, scoreViewModelFactory).get(ScoreViewModel::class.java)
 
+
+      
+
         scoreViewModel.onPlayAgainLiveData.observe(viewLifecycleOwner) { playAgain ->
             if (playAgain) {
                 goToGameScreen()

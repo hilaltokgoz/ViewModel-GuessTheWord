@@ -54,6 +54,7 @@ class GameFragment : Fragment() {
         gameViewModel.wordLiveData.observe(viewLifecycleOwner) {
             binding.wordText.text = it
         }
+
         //updateScoreText()'i otomatik olarak alabiliriz.
         gameViewModel.scoreLiveData.observe(viewLifecycleOwner) {
             binding.scoreText.text = it.toString()
