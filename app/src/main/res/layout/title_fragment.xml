@@ -17,12 +17,38 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
-
+   <data>
+       <variable
+           name="titleViewModel"
+           type="com.example.android.guesstheword.screens.title.TitleViewModel" />
+  
+  <variable
+      name="playButtonViewState"
+      type="com.example.android.guesstheword.screens.title.PlayButtonViewState" />
+  
+  
+  
+   </data>
+    
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/title_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".screens.title.TitleFragment">
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginTop="32dp"
+            android:text="@={titleViewModel.currentText}"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            />
+
+
 
         <TextView
             android:id="@+id/get_ready_text"
@@ -65,6 +91,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="32dp"
             android:text="@string/play_button"
+            playButtonVisibility="@{playButtonViewState.playButtonVisibility}"
             android:theme="@style/GoButton"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

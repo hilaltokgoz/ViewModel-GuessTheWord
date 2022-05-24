@@ -22,6 +22,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import com.example.android.guesstheword.R
 import com.example.android.guesstheword.databinding.TitleFragmentBinding
@@ -30,15 +32,25 @@ import com.example.android.guesstheword.databinding.TitleFragmentBinding
  * Fragment for the starting or title screen of the app
  */
 class TitleFragment : Fragment() {
-
+    private lateinit var titleViewModel:TitleViewModel
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
         // Inflate the layout for this fragment
         val binding: TitleFragmentBinding = DataBindingUtil.inflate(
                 inflater, R.layout.title_fragment, container, false)
+       binding.playButtonViewState=PlayButtonViewState.initial() //İlk başta gözükmemesi için
 
         binding.playGameButton.setOnClickListener {
             findNavController().navigate(TitleFragmentDirections.actionTitleToGame())
+        }
+        //title view Model create
+        titleViewModel = ViewModelProvider(this).get(TitleViewModel::class.java)
+        binding.lifecycleOwner = viewLifecycleOwner
+        binding.titleViewModel = titleViewModel
+
+        titleViewModel.playButtonVisibility.observe(viewLifecycleOwner) {
+         binding.playButtonViewState=it
+         binding.executePendingBindings() //sıralı binding'lerin hızlı bir şekilde gerçekleşmesi için
         }
         return binding.root
     }
